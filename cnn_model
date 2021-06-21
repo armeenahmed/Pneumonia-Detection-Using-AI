@@ -5,6 +5,7 @@ from keras.models import Sequential
 from keras.layers import Activation, Dropout, Flatten, Dense, BatchNormalization
 from keras import optimizers
 
+# Building the cnn
 train_data, train_labels = get_train_data()
 test_data, test_labels = get_test_data()
 cnn = CNNClassifier(num_hidden_layers = 5)
@@ -13,6 +14,7 @@ cnn_score = cnn.evaluate(test_data, test_labels, verbose=0)
 print("Cnn score: ", cnn_score)
 plot_acc(cnn_history)
 
+# Building a confusion matrix
 from sklearn.metrics import accuracy_score, confusion_matrix
 # To use confusion_matrix, we need:
 # labels: the labels of the data (1 - PNEUMONIA or 0 - NORMAL)
