@@ -1,0 +1,39 @@
+# Pneumonia-Detection-Using-AI
+# Importing libraries
+import tensorflow as ts
+from keras.models import Sequential
+from keras.layers import Activation, Dropout, Flatten, Dense, BatchNormalization
+from keras import optimizers
+
+train_data, train_labels = get_train_data()
+test_data, test_labels = get_test_data()
+cnn = CNNClassifier(num_hidden_layers = 5)
+cnn_history = cnn.fit(train_data, train_labels, epochs = 100, validation_data = (test_data, test_labels), shuffle = True, callbacks = [monitor])
+cnn_score = cnn.evaluate(test_data, test_labels, verbose=0)
+print("Cnn score: ", cnn_score)
+plot_acc(cnn_history)
+
+from sklearn.metrics import accuracy_score, confusion_matrix
+# To use confusion_matrix, we need:
+# labels: the labels of the data (1 - PNEUMONIA or 0 - NORMAL)
+# predictions: what our model thinks the labels are
+best_model = cnn
+predictions = best_model.predict_classes(test_data)
+print ("Best model accurcay: ", accuracy_score(test_labels, predictions)*100)
+confusion = confusion_matrix(test_labels, predictions)
+print(confusion)
+tp  = confusion[1][1]
+tn  = confusion[0][0] 
+fp = confusion[0][1]
+fn = confusion[1][0]
+print('True positive: %d'%tp)
+print('True negative: %d'%tn)
+print('False positive: %d'%fp)
+print('False negative: %d'%fn)
+
+# Plotting confusion matrix with seaborn
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.heatmap(confusion, annot = True, fmt = 'd', cbar_kws={'label':'count'});
+plt.ylabel('Actual');
+plt.xlabel('Predicted');
